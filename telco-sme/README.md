@@ -1,273 +1,176 @@
-# Telco Subject Matter Expert (SME) Portal
-**🎥 Demo Video**: [Watch on YouTube](https://youtu.be/UQB1T-ThQBk) <br>
-**📖 Article**: [Read on Medium](https://medium.com/open-5g-hypercore/episode-xxix-the-prompt-engineering-how-to-make-a-toddler-act-talk-nice-83e9aab2e3b9)
+# Telco-AIX SME Portal & Benchmark Suite
 
-![Web UI Screenshot](images/webui2.png)
+**🎥 Demo Video**: [Watch on YouTube](https://youtu.be/UQB1T-ThQBk) · **📖 Article**: [Read on Medium](https://medium.com/open-5g-hypercore/episode-xxix-the-prompt-engineering-how-to-make-a-toddler-act-talk-nice-83e9aab2e3b9)
 
-## Overview
-The Telco-AIX SME (Subject Matter Expert) Portal is a GenAI web application designed for telecom professionals to augment their daily operations. It provides AI-powered conversations with specialized knowledge in telco technologies, network architecture, and technical solutions powered with a well benchmarked models and in-purpose built expert prompts. We also offer glimse of embeddings generation and in-memory embeddings search.
+A GenAI workbench for telecom professionals: a **web portal** for expert AI
+conversations, embeddings, and live model observability — plus a fully
+**self-contained telco benchmark suite** that measures any model you plug in,
+from the CLI or straight from the portal UI.
 
-The app-stack also features real-time metrics visualization and diagnostics from the vLLM runtime, session management, and multiple expert personas for domain-specific assistance. 
+Everything runs against **any OpenAI-compatible endpoint** (vLLM,
+RHOAI/KServe, TGI, SaaS). Point it at your model with two environment
+variables and you have a chat portal, a metrics dashboard, and a
+leaderboard-grade eval harness — no source edits, no external data
+dependencies.
 
-## Features
+---
 
-### 🤖 **AI-Powered Conversations**
-- **Multiple Expert Personas**: 7+ specialized system prompts for different domains
-- **Intelligent Responses**: Context-aware AI with telecommunications expertise
-- **Smart Streaming**: Automatic streaming for contexts over 4000 tokens
-- **File Upload Support**: Attach and analyze technical documents (txt, md, csv, json, py, pdf)
+## The Portal, Tab by Tab
 
-### 📂 **Persistent Sessions**
-- **Session Management**: Create, load, and manage conversation sessions
-- **Browser Refresh Resilience**: Never lose conversation progress
-- **Session Sharing**: Share session IDs for collaboration
-- **Auto-Save**: All conversations and settings automatically saved
-- **24-Hour Retention**: Sessions persist for 24 hours with automatic cleanup
+### 💬 Chat — expert telco conversations
 
-### ⚙️ **Advanced Configuration**
-- **Temperature Control**: Adjust AI creativity (0=focused, 1=creative)
-- **Token Limits**: Configure response length up to 20,000 tokens
-- **System Prompts**: 7+ specialized expert personas plus custom options
-- **Real-time Settings**: All parameters update dynamically
-- **Context Management**: Auto-streaming for large contexts (>4000 tokens)
+![Chat tab](images/tab-chat.png)
 
-### 🎯 **Expert Domains**
-1. **Default Assistant** - Precision-focused AI with executive-level clarity
-2. **Network Expert** - 20+ years expertise in enterprise/SP networks, SD-WAN, SASE
-3. **Telco Expert** - 5G/6G specialist with vendor ecosystem knowledge
-4. **Cloud Expert** - Multi-cloud architect with FinOps and DevOps expertise
-5. **Storage Expert** - Petabyte-scale storage infrastructure design
-6. **CustomerSupport-IntentClassifier** - Telecom customer service intent classification
-7. **Custom** - Create your own expert persona
+Multi-persona chat with telecom-specialized system prompts (Telco Expert,
+Network Expert, Cloud/Storage Experts, intent classification, or your own).
+Persistent sessions survive browser refreshes and can be shared by ID.
+Auto-streaming kicks in for large contexts; temperature, token limits, and
+prompt overrides adjust live. File upload (txt/md/csv/json/py/pdf) feeds
+documents into the conversation.
 
-## 📊 **Observability & Metrics**
-The application includes comprehensive metrics collection and visualization:
-- **Real-time Metrics**: Pull metrics from vLLM `/metrics` endpoint
-- **Performance Monitoring**: Request counts, latency, token throughput
-- **Resource Utilization**: GPU usage, cache hit rates, memory consumption
-- **Interactive Dashboards**: Plotly-based visualizations with detailed insights
+### 📝 Prompt Manager — persona engineering
 
-![Web UI Screenshot](images/vllm-metrics.png)
+![Prompt Manager tab](images/tab-prompts.png)
 
-## Installation
+Create, edit, and persist system-prompt personas (`system_prompts.json`)
+without touching code — load an existing persona, refine it, save, and it is
+immediately available in the Chat tab.
 
-### Prerequisites
-- Python 3.8 or higher
-- Required packages (see requirements-v2.txt)
+### 🧬 Embeddings Generation
 
-### Setup
-1. Clone or download the repository
-2. Install dependencies:
-   ```bash
-   pip install -r requirements-v2.txt
-   ```
-3. Run the application:
-   ```bash
-   python sme-web-ui-v2.py
-   ```
-4. Access the web interface at: `http://localhost:30180`
+![Embeddings tab](images/tab-embeddings.png)
 
-### Authentication
-- **Username**: `admin`
-- **Password**: `minad`
+Generate embeddings against a configured embeddings endpoint and experiment
+with in-memory semantic search over your own text.
 
-## Usage
+### 📊 Observability — live vLLM metrics
 
-### Getting Started
-1. **New Session**: Leave Session ID empty or click "🆕 New Session"
-2. **Load Session**: Enter existing Session ID and click "📂 Load Session"
-3. **Select Expert**: Choose appropriate system prompt from dropdown
-4. **Configure Settings**: Adjust temperature and max tokens as needed
-5. **Start Chatting**: Type your message and press Enter or click Send
+![Observability tab](images/tab-observability.png)
 
-### Session Management
-- **Session IDs**: 8-character unique identifiers (e.g., "a1b2c3d4")
-- **Persistence**: Sessions survive browser refreshes and server restarts
-- **Recovery**: Enter session ID to continue previous conversations
-- **Cleanup**: Expired sessions automatically removed after 24 hours
+A dual-API dashboard polling the model server's `/metrics`: request rates and
+latency, token throughput, GPU cache utilization, health status, efficiency
+analysis, and diagnostics for both the chat and embeddings endpoints —
+with Plotly visualizations and configurable collection intervals.
 
-### File Uploads
-- **Supported Formats**: .txt, .md, .csv, .json, .py, .pdf (with PyPDF2)
-- **Size Limit**: 3,500 characters to prevent timeouts
-- **One-time Use**: Files apply only to current message, not subsequent ones
-- **PDF Support**: Optional - requires PyPDF2 installation
+### 🏆 Benchmark — leaderboard-grade evals, one click
 
-## System Prompts Configuration
+![Benchmark tab running](images/tab-benchmark-live.png)
 
-### External File Loading
-System prompts are loaded from `system_prompts.json`, making it easy to customize AI personas without code changes.
+Select any subset of the **8 embedded Open-Telco benchmarks** — TeleQnA,
+TeleTables, TeleMath, TeleLogs, 3GPP-TSG, ORANBench, srsRANBench, 6G-Bench —
+pick the dataset tier (lite = leaderboard default, or full), sample limit,
+parallelism, and token cap, and watch results stream in live: per-task
+progress and running accuracy update every ~2 seconds.
 
-### File Structure
-```json
-{
-    "Prompt Name": "Detailed prompt content with role, expertise, and methodology...",
-    "Another Expert": "Another specialized prompt..."
-}
-```
+![Benchmark tab complete](images/tab-benchmark-done.png)
 
-### Management Features
-- **Dynamic Reload**: Reload prompts without restarting
-- **UI Editor**: Create and edit prompts directly in the web interface
-- **Export/Import**: Manage prompts through JSON file editing
-- **Validation**: Automatic syntax checking and error handling
+When the run completes you get accuracy ± stderr per benchmark, the overall
+average, the exact model/endpoint/configuration used, and per-sample
+transcripts for auditing. The same engine is scriptable from the CLI (below).
 
-### Adding Custom Prompts
-1. Go to "📝 Prompt Manager" tab
-2. Enter prompt name and detailed content
-3. Click "💾 Save Prompt"
-4. Prompt immediately available in dropdown
+---
 
-## Architecture
+## Quick Start
 
-### Core Components
-- **SessionManager**: File-based session persistence using pickle with 24-hour TTL
-- **ChatClient**: Advanced HTTP client with streaming support and exponential backoff retries
-- **ChatInterface**: Gradio-based UI with real-time updates and event handling
-- **SystemPromptsManager**: Dynamic prompt loading and runtime editing
-- **MetricsCollector**: Real-time metrics collection and visualization
-- **EmbeddingClient**: Embeddings API integration for semantic search
+### 1. Serve a model
 
-### Technical Features
-- **Smart Context Management**: Automatic streaming for contexts >4000 tokens
-- **Retry Logic**: Robust error handling with configurable max attempts (default: 5)
-- **Thread Safety**: Concurrent request handling with processing locks
-- **Memory Optimization**: Context limits up to 20,000 tokens
-- **Token Authentication**: Bearer token support for API security
-- **Timeout Configuration**: Separate timeouts for streaming (10min) and non-streaming (4min)
-
-### File Structure
-```
-├── sme-web-ui-v2.py        # SME portal app (Gradio) — includes the 🏆 Benchmark tab
-├── system_prompts.json     # Expert persona definitions (7+ personas)
-├── requirements-v2.txt     # Python dependencies
-├── sessions/               # Session storage directory (auto-created)
-├── benchmarks/             # ALL benchmark & eval assets — see benchmarks/README.md
-│   ├── open-telco/         #   self-contained Open-Telco eval framework (embedded datasets)
-│   ├── vendor-genai-tests/ #   Ericsson / Nokia / Mavenir GenAI tests + Telco5G reports
-│   ├── telcos-last-exam/   #   hardest-questions telco exam + per-model answers
-│   ├── model-reports/      #   per-model benchmark answers & perf reports (Qwen3, Seed-36B)
-│   └── embeddings/         #   embeddings benchmark notes
-├── archive/                # Legacy v1 application
-├── images/                 # Screenshots and documentation images
-└── README.md               # This documentation
-```
-
-## Configuration
-
-### API Configuration
-The model endpoint is **pluggable via environment variables** — point the portal
-at any OpenAI-compatible server (vLLM, RHOAI/KServe, TGI, SaaS) without touching
-the source:
+Any OpenAI-compatible server works. Example with vLLM:
 
 ```bash
+vllm serve <your-model> --port 8080
+```
+
+### 2. Point the portal at it (env vars — no source edits)
+
+```bash
+pip install 'gradio>=5,<6' && pip install -r requirements-v2.txt
+
 export SME_API_ENDPOINT="https://my-model-route.apps.mylab"   # base URL, no /v1
 export SME_MODEL_NAME="my-served-model-name"
-export SME_API_TOKEN="..."            # only if the endpoint requires auth
-export SME_USE_TOKEN_AUTH="false"     # default true
-export SME_TLS_VERIFY="false"         # lab clusters with self-signed certs
-python sme-web-ui-v2.py
+export SME_USE_TOKEN_AUTH="false"      # or true + SME_API_TOKEN="..."
+export SME_TLS_VERIFY="false"          # lab clusters with self-signed certs
+
+python sme-web-ui-v2.py                # portal on :30180, login admin/minad
 ```
 
-Embeddings equivalents: `SME_EMBEDDINGS_ENDPOINT`, `SME_EMBEDDINGS_MODEL`,
-`SME_EMBEDDINGS_TOKEN`. Portal login: `SME_ADMIN_USERNAME` / `SME_ADMIN_PASSWORD`.
-Anything not set falls back to the `Config` defaults in `sme-web-ui-v2.py`:
+All settings: `SME_API_ENDPOINT`, `SME_MODEL_NAME`, `SME_API_TOKEN`,
+`SME_USE_TOKEN_AUTH`, `SME_TLS_VERIFY`, `SME_ADMIN_USERNAME`,
+`SME_ADMIN_PASSWORD`, and embeddings equivalents
+(`SME_EMBEDDINGS_ENDPOINT` / `SME_EMBEDDINGS_MODEL` / `SME_EMBEDDINGS_TOKEN`).
+Anything unset falls back to the `Config` defaults in `sme-web-ui-v2.py`.
 
-```python
-class Config:
-    api_endpoint: str = "https://your-api-url"
-    model_name: str = "your-model-name"
-    api_token: str = "your-api-key"  # Optional
-    use_token_auth: bool = True
-```
+### 3. (Optional) Deploy on Kubernetes / OpenShift
 
-### Model Deployment
-Currently configured for OpenAI-compatible endpoints. The application has been tested with:
-- **vLLM Runtime**: OpenAI-compatible serving
-- **Hardware**: NVIDIA GPU acceleration recommended
-- **Reference Model Image**: oci://docker.io/efatnar/qwen3-30b-a3b-fp8:latest <br>
-  - vLLM Serving Config:
-     - --max-model-len=24576
-     - --gpu-memory-utilization=0.95
-- **Model Format**: Any model compatible with vLLM serving
-![Model Serving](images/modelserving.png)
+The portal is a single Python process — a minimal Deployment that clones this
+repo, pip-installs, and sets the `SME_*` env vars is all it takes; add a
+Service + Route/Ingress on port 30180. The Benchmark tab works out of the box
+since the datasets ship inside the repo.
 
-### Customization
-- Edit `Config` class in `sme-web-ui-v2.py` for API endpoints
-- Modify `system_prompts.json` for expert personas
-- Adjust timeout and retry settings in Config class
-- Configure embeddings API separately if needed
+---
 
-## Troubleshooting
+## Benchmarks & Evals
 
-### Common Issues
-- **Connection Problems**: Check API endpoint and network connectivity
-- **Session Loading**: Verify session ID format (8 characters)
-- **Prompt Errors**: Validate JSON syntax in system_prompts.json
-- **Performance**: Reduce context size or max tokens for faster responses
-- **PDF Processing**: Install PyPDF2 if PDF support is needed: `pip install PyPDF2`
-- **Metrics Visualization**: Install Plotly for enhanced metrics: `pip install plotly`
-- **Token Authentication**: Ensure API token is correctly configured in Config class
+All benchmark assets are consolidated under [`benchmarks/`](benchmarks/README.md):
 
-### Diagnostics
-1. Go to "🔧 Diagnostics" tab
-2. Click "🔍 Run Diagnostics" to test all connections
-3. Check console output for detailed error information
+| Suite | What it is |
+|---|---|
+| [`benchmarks/open-telco/`](benchmarks/open-telco/) | **Self-contained Open-Telco eval framework** — 8 GSMA telecom benchmarks with lite + full datasets embedded (gzipped JSONL, ~4.5MB) and a single-file runner (stdlib + `requests`). Scoring parity-validated against the official Inspect AI harness (≤1pp on all 7 leaderboard tasks). Includes the 2026-08 leaderboard verification report, claim snapshots, and reference results. |
+| [`benchmarks/vendor-genai-tests/`](benchmarks/vendor-genai-tests/) | Original vendor GenAI test sets (Ericsson / Nokia / Mavenir) with graded results + Telco5G benchmark reports. |
+| [`benchmarks/telcos-last-exam/`](benchmarks/telcos-last-exam/) | Hardest-questions telco exam with per-model answer sheets. |
+| [`benchmarks/model-reports/`](benchmarks/model-reports/) | Per-model benchmark answers and performance reports collected on this lab. |
+| [`benchmarks/embeddings/`](benchmarks/embeddings/) | Embeddings model benchmark notes. |
 
-### Session Management
-- **List Sessions**: View all active sessions with details
-- **Cleanup**: Remove expired sessions manually
-- **Backup**: Session files stored in `sessions/` directory
-
-## Benchmarking & Evals
-
-Two complementary benchmark assets live in this project:
-
-All benchmark and eval assets are consolidated under **`benchmarks/`**
-(see [`benchmarks/README.md`](benchmarks/README.md) for the full index):
-
-- **`benchmarks/open-telco/`** — a **self-contained Open-Telco eval
-  framework**: the 8 GSMA telecom benchmarks (TeleQnA, TeleTables, TeleMath,
-  TeleLogs, 3GPP-TSG, ORANBench, srsRANBench, 6G-Bench) with both lite and
-  full datasets **embedded in the repo** (gzipped JSONL, ~4.5MB) and a
-  single-file runner (`otel_eval.py`, stdlib + `requests` only). No Hugging
-  Face, no external eval repo, no inspect-ai required at runtime — results
-  stay reproducible even if every upstream source disappears. Scoring parity
-  with the official Inspect AI harness is validated to ≤1pp on all 7
-  leaderboard tasks (`benchmarks/open-telco/reference/parity_validation_2026-08-08.md`).
-- **`benchmarks/vendor-genai-tests/`** — the original vendor GenAI test sets
-  (Ericsson / Nokia / Mavenir) with historical results, preserved.
-- **`benchmarks/telcos-last-exam/`** — hardest-questions telco exam with
-  per-model answer sheets.
-- **`benchmarks/model-reports/`** — per-model benchmark answers and
-  performance reports collected on this lab.
-
-Run from the CLI:
+Run from the CLI (identical engine to the portal tab):
 
 ```bash
 cd benchmarks/open-telco
 python3 otel_eval.py --endpoint https://<model-route>/v1 --model <name>
+# self-signed lab certs: add --insecure   ·   full datasets: --tier full
 ```
 
-Or interactively from the portal: the **🏆 Benchmark** tab runs any subset of
-the Open-Telco suite against the configured model endpoint and streams live
-per-task progress, accuracies, and a final summary into the UI.
+**Reproducibility discipline**: always record the model revision hash, serving
+stack + version, precision, temperature, dataset tier, and date with any
+published number — the verification report in
+`benchmarks/open-telco/reference/` documents exactly why.
 
-## Development
+---
 
-### Key Files
-- `sme-web-ui-v2.py`: Enhanced main application with all classes and UI
-- `system_prompts.json`: Expert persona definitions (7+ specialized personas)
-- `requirements-v2.txt`: Python package dependencies
-### Key Classes
-- **Config**: Application configuration and API settings
-- **SessionManager**: Persistent session management with file-based storage
-- **ChatClient**: HTTP client for API communication with streaming support
-- **ChatInterface**: Gradio UI implementation
-- **MetricsCollector**: Real-time metrics collection and processing
-- **EmbeddingClient**: Embeddings API integration
+## Repository Layout
 
-### Features in Development
-- Enhanced metrics visualization with Plotly
-- Embeddings support for semantic search
-- Advanced session management with collaboration features
-- Real-time diagnostics and health monitoring
+```
+telco-sme/
+├── sme-web-ui-v2.py        # The portal (Gradio) — all tabs incl. 🏆 Benchmark
+├── system_prompts.json     # Expert persona definitions
+├── requirements-v2.txt     # Python dependencies (pin gradio <6)
+├── benchmarks/             # All benchmark & eval assets (see benchmarks/README.md)
+│   ├── open-telco/         #   embedded eval framework: runner + datasets + reports
+│   ├── vendor-genai-tests/ #   Ericsson / Nokia / Mavenir + Telco5G
+│   ├── telcos-last-exam/   #   telco exam + per-model answers
+│   ├── model-reports/      #   per-model results & perf reports
+│   └── embeddings/         #   embeddings benchmark
+├── archive/                # Legacy v1 application
+├── images/                 # Screenshots (this README) & docs imagery
+└── README.md
+```
+
+## Architecture Notes
+
+Single-file app (`sme-web-ui-v2.py`) with clean separations:
+
+- **Config** — env-var-driven connection settings (pluggable endpoint)
+- **ChatClient** — OpenAI-compatible HTTP client with smart streaming,
+  retries, and timeout handling
+- **SessionManager** — file-backed persistent sessions (24h retention)
+- **MetricsCollector** — `/metrics` polling, archival, and Plotly dashboards
+- **ChatInterface** — the Gradio UI, including the Benchmark tab which
+  imports `benchmarks/open-telco/otel_eval.py` directly (streaming transport,
+  8k default token cap, per-sample transcripts)
+
+Benchmark engine design highlights: SSE streaming by default (survives
+proxy/router idle timeouts on long generations), deterministic scoring ported
+1:1 from the official harness, zero network dependencies for datasets.
+
+---
+
+*Part of [Telco-AIX](https://github.com/open-experiments/Telco-AIX) — applied
+AI experiments for telecom. Contributions welcome.*
