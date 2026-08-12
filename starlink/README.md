@@ -12,7 +12,7 @@ To empower travelers with insights into Starlink's internet service quality at t
     <img src="https://raw.githubusercontent.com/tme-osx/TME-AIX/refs/heads/RedHat-Special/starlink/images/starling-qoe-moods.png" width="640"/>
 </div>
 
-## Software-Requirement
+## Software Requirement
 
 | Software      | Version |
 |---------------|---------|

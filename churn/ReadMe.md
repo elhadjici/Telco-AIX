@@ -9,7 +9,7 @@ This project delivers an end‑to‑end Telecom Customer Churn Prediction soluti
 
 Both models are trained on rich, synthetic telecom datasets—incorporating usage patterns, billing details, and support interactions—to predict which customers are at highest risk of churn. By identifying high‑risk segments in advance, operators can deploy targeted retention offers and optimize churn‑prevention campaigns, ultimately safeguarding revenue and improving customer lifetime value.
 
-## Software-Requirement
+## Software Requirement
 
 | Software      | Version |
 |---------------|---------|

@@ -25,7 +25,7 @@ The models are trained on synthetic telecom data to predict fraud cases and iden
 
 Data-Set: https://huggingface.co/datasets/fenar/revenue_assurance
 
-## Software-Requirement
+## Software Requirement
 
 | Software      | Version |
 |---------------|---------|

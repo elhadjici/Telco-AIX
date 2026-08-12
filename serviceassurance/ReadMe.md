@@ -7,7 +7,7 @@ This project aims to deliver a service assurance insights (net promoter score -N
 
 **🎥 Demo Video**: [Watch on YouTube](https://youtu.be/gFbtux0dGVA) <br>
 
-## Software-Requirement
+## Software Requirement
 
 | Software      | Version |
 |---------------|---------|
